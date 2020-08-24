@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,7 +33,7 @@ import static androidx.constraintlayout.motion.widget.MotionScene.TAG;
 
 public class StopwatchFragment extends Fragment {
     Chronometer chronometer;
-    ImageButton pp, reset, flag;
+    Button pp, reset, flag;
     boolean running;
     long offset;
     RecyclerView recyclerView;
@@ -62,9 +62,9 @@ public class StopwatchFragment extends Fragment {
         flags = new ArrayList<>();
         adapter = new RecyclerAdapter();
         chronometer = (Chronometer) view.findViewById(R.id.stopwatch);
-        pp = (ImageButton) view.findViewById(R.id.playpause);
-        reset = (ImageButton) view.findViewById(R.id.reset);
-        flag = (ImageButton) view.findViewById(R.id.flag);
+        pp = (Button) view.findViewById(R.id.playpause);
+        reset = (Button) view.findViewById(R.id.reset);
+        flag = (Button) view.findViewById(R.id.flag);
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
@@ -106,8 +106,9 @@ public class StopwatchFragment extends Fragment {
         chronometer.setBase(SystemClock.elapsedRealtime() - offset);
         chronometer.start();
         running = true;
+        pp.setText("stop");
         Resources resources = getResources();
-        pp.setImageDrawable(resources.getDrawable(R.drawable.pause));
+//        pp.setImageDrawable(resources.getDrawable(R.drawable.pause));
     }
 
     public void stop() {
@@ -116,11 +117,12 @@ public class StopwatchFragment extends Fragment {
         offset = SystemClock.elapsedRealtime() - chronometer.getBase();
         running = false;
         Resources resources = getResources();
-        pp.setImageDrawable(resources.getDrawable(R.drawable.play));
+        pp.setText("start");
+//        pp.setImageDrawable(resources.getDrawable(R.drawable.play));
     }
 
     public void reset() {
-        flag.setVisibility(View.VISIBLE);
+        flag.setVisibility(View.INVISIBLE);
         chronometer.setBase(SystemClock.elapsedRealtime());
         offset = 0;
         running = false;
@@ -128,7 +130,8 @@ public class StopwatchFragment extends Fragment {
         flags = new ArrayList<>();
         adapter.notifyset(flags);
         Resources resources = getResources();
-        pp.setImageDrawable(resources.getDrawable(R.drawable.play));
+        pp.setText("start");
+//        pp.setImageDrawable(resources.getDrawable(R.drawable.play));
     }
 
     public void flagset() {
